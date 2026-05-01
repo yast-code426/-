@@ -13,7 +13,10 @@
   .sidebar.open {
     transform: translateX(0);
   }
-
+   
+  .sidebar-toggle {
+  display: flex;
+  }
   .main-content {
     margin-left: 0;
   }
@@ -76,6 +79,7 @@
 
   .main-content {
     padding-top: 56px;
+    margin-left: 0;
   }
 
   .content-wrapper {
@@ -140,6 +144,10 @@
   .search-container {
     border-radius: var(--radius-lg);
   }
+
+  .sidebar-overlay {
+    display: block;
+  }
 }
 
 @media (max-width: 480px) {
@@ -147,29 +155,6 @@
     height: 50vh;
     min-height: 300px;
   }
-  
-  .page-section {
-    padding: 24px 16px 100px;
-  }
-  
-  .about-page-avatar {
-    width: 100px;
-    height: 100px;
-  }
-  
-  .about-page-name {
-    font-size: 1.5rem;
-  }
-  
-  .friends-list {
-    grid-template-columns: 1fr;
-  }
-  
-  .friend-card {
-    flex-direction: column;
-    text-align: center;
-  }
-}
 
   .banner-content .banner-avatar {
     width: 60px;
@@ -186,6 +171,28 @@
 
   .banner-arrow {
     display: none;
+  }
+
+  .page-section {
+    padding: 24px 16px 100px;
+  }
+
+  .about-page-avatar {
+    width: 100px;
+    height: 100px;
+  }
+
+  .about-page-name {
+    font-size: 1.5rem;
+  }
+
+  .friends-list {
+    grid-template-columns: 1fr;
+  }
+
+  .friend-card {
+    flex-direction: column;
+    text-align: center;
   }
 
   .content-wrapper {

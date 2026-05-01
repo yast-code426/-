@@ -2,11 +2,12 @@ const Posts = {
   allPosts: [],
   filteredPosts: [],
   currentPage: 1,
-  perPage: 9,
+  perPage: 8,
   viewMode: 'grid',
   filterCategory: null,
   filterTag: null,
   searchQuery: '',
+
   init() {
     this.allPosts = [...SITE_DATA.posts];
     this.filteredPosts = [...this.allPosts];
@@ -15,33 +16,37 @@ const Posts = {
     this.bindEvents();
     this.initInlineSearch();
   },
-initInlineSearch() {
-  const input = document.getElementById('inline-search-input');
-  const clearBtn = document.getElementById('inline-search-clear');
-  if (!input || !clearBtn) return;
-  
-  const self = this;
-  input.addEventListener('input', function() {
-    const query = input.value.trim();
-    self.searchQuery = query;
-    clearBtn.style.display = query.length > 0 ? 'flex' : 'none';
-    self.filterBySearch(query);
-  });
-  
-  clearBtn.addEventListener('click', function() {
-    input.value = '';
-    self.searchQuery = '';
-    clearBtn.style.display = 'none';
-    self.filterBySearch('');
-  });
-},
+
+  initInlineSearch() {
+    const input = document.getElementById('inline-search-input');
+    const clearBtn = document.getElementById('inline-search-clear');
+    if (!input || !clearBtn) return;
+    
+    const self = this;
+    input.addEventListener('input', function() {
+      const query = input.value.trim();
+      self.searchQuery = query;
+      clearBtn.style.display = query.length > 0 ? 'flex' : 'none';
+      self.filterBySearch(query);
+    });
+    
+    clearBtn.addEventListener('click', function() {
+      input.value = '';
+      self.searchQuery = '';
+      clearBtn.style.display = 'none';
+      self.filterBySearch('');
+    });
+  },
+
   loadState() {
     const saved = localStorage.getItem('sakura-view-mode');
     if (saved) this.viewMode = saved;
   },
+
   saveState() {
     localStorage.setItem('sakura-view-mode', this.viewMode);
   },
+
   bindEvents() {
     document.addEventListener('click', (e) => {
       if (e.target.closest('[data-action="toggle-layout"]')) {
@@ -59,6 +64,7 @@ initInlineSearch() {
       }
     });
   },
+
   render() {
     const grid = document.querySelector('.posts-grid');
     const header = document.querySelector('.content-header');
@@ -77,15 +83,13 @@ initInlineSearch() {
     grid.classList.toggle('list-view', this.viewMode === 'list');
     this.initScrollAnimations();
   },
+
   updateHeader(header) {
     if (!header) return;
     const titleEl = header.querySelector('.content-title span');
     const filterContainer = header.querySelector('.filter-info');
     const total = this.filteredPosts.length;
     const totalText = ` (${total})`;
-    if (titleEl) {
-      titleEl.textContent = totalText;  // 或者保留原有文字，只更新括号部分
-    }
     if (titleEl) {
       titleEl.textContent = totalText;
     }
@@ -102,6 +106,7 @@ initInlineSearch() {
       filterContainer.innerHTML = filters;
     }
   },
+
   renderCard(post) {
     const category = SITE_DATA.categories.find(c => c.id === post.category);
     const tags = post.tags.map(id => SITE_DATA.tags.find(t => t.id === id)).filter(Boolean);
@@ -142,6 +147,7 @@ initInlineSearch() {
       </article>
     `;
   },
+
   renderEmpty() {
     if (this.allPosts.length === 0) {
       return `
@@ -160,6 +166,7 @@ initInlineSearch() {
       </div>
     `;
   },
+
   renderPagination() {
     const container = document.querySelector('.pagination');
     if (!container) return;
@@ -194,6 +201,7 @@ initInlineSearch() {
     </button>`;
     container.innerHTML = html;
   },
+
   handlePaginationClick(e) {
     const btn = e.target.closest('.pagination-btn');
     if (!btn || btn.disabled) return;
@@ -205,16 +213,19 @@ initInlineSearch() {
       this.goToPage(parseInt(btn.dataset.page));
     }
   },
+
   goToPage(page) {
     this.currentPage = page;
     this.render();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   },
+
   toggleView() {
     this.viewMode = this.viewMode === 'grid' ? 'list' : 'grid';
     this.saveState();
     this.render();
   },
+
   updateLayoutIcon() {
     const btn = document.querySelector('[data-action="toggle-layout"]');
     if (btn) {
@@ -224,12 +235,14 @@ initInlineSearch() {
       }
     }
   },
+
   getGridIcon() {
     return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
       <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
     </svg>`;
   },
+
   getListIcon() {
     return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
@@ -237,12 +250,14 @@ initInlineSearch() {
       <line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
     </svg>`;
   },
+
   handlePostClick(e) {
     const card = e.target.closest('.post-card');
     if (!card) return;
     const postId = parseInt(card.dataset.postId);
     Modal.open('post', postId);
   },
+
   handlePostTagClick(e) {
     const tag = e.target.closest('.post-tag');
     if (!tag) return;
@@ -253,6 +268,7 @@ initInlineSearch() {
     document.querySelectorAll('.category-item').forEach(c => c.classList.remove('active'));
     this.filterByTag(tagId);
   },
+
   filterByCategory(categoryId) {
     this.filterCategory = categoryId;
     this.filterTag = null;
@@ -260,6 +276,7 @@ initInlineSearch() {
     this.currentPage = 1;
     this.render();
   },
+
   filterByTag(tagId) {
     this.filterTag = tagId;
     this.filterCategory = null;
@@ -267,6 +284,7 @@ initInlineSearch() {
     this.currentPage = 1;
     this.render();
   },
+
   filterBySearch(query) {
     const q = query.toLowerCase();
     if (!q) {
@@ -284,6 +302,7 @@ initInlineSearch() {
     this.currentPage = 1;
     this.render();
   },
+
   clearFilter() {
     this.filterCategory = null;
     this.filterTag = null;
@@ -293,6 +312,7 @@ initInlineSearch() {
     this.currentPage = 1;
     this.render();
   },
+
   formatDate(dateStr) {
     const date = new Date(dateStr);
     const year = date.getFullYear();
@@ -300,12 +320,14 @@ initInlineSearch() {
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   },
+
   formatNumber(num) {
     if (num >= 1000) {
       return (num / 1000).toFixed(1) + 'k';
     }
     return num.toString();
   },
+
   initScrollAnimations() {
     if ('IntersectionObserver' in window) {
       const cards = document.querySelectorAll('.post-card:not(.animated)');

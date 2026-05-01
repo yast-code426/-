@@ -12,6 +12,7 @@ const App = {
     this.bindGlobalEvents();
     this.initPageNavigation();
     this.renderArchives();
+    this.renderFriends();
     this.handleHashChange();
   },
   initPageNavigation() {
@@ -46,13 +47,25 @@ const App = {
     });
     
     const contentWrapper = document.querySelector('.content-wrapper');
-    if (contentWrapper) {
-      contentWrapper.style.display = (!targetSection || targetSection === 'home') ? 'block' : 'none';
-    }
-    
     const banner = document.querySelector('.banner');
-    if (banner) {
-      banner.style.display = (!targetSection || targetSection === 'home') ? 'block' : 'none';
+    const sidebar = document.querySelector('.sidebar');
+    const sidebarToggle = document.querySelector('.sidebar-toggle');
+    const footer = document.querySelector('.footer');
+    
+    if (targetSection === null) {
+      contentWrapper.style.display = 'block';
+      banner.style.display = 'block';
+      if (sidebar) sidebar.style.display = 'block';
+      if (sidebarToggle) sidebarToggle.style.display = 'flex';
+      if (footer) footer.style.marginLeft = '280px';
+      document.querySelector('.main-content').style.marginLeft = '280px';
+    } else {
+      contentWrapper.style.display = 'none';
+      banner.style.display = 'none';
+      if (sidebar) sidebar.style.display = 'none';
+      if (sidebarToggle) sidebarToggle.style.display = 'none';
+      if (footer) footer.style.marginLeft = '0';
+      document.querySelector('.main-content').style.marginLeft = '0';
     }
     
     if (targetSection && targetSection !== 'home') {
@@ -113,6 +126,33 @@ const App = {
       }
     });
   },
+renderFriends() {
+  const friendsContainer = document.querySelector('.friends-list');
+  if (!friendsContainer) return;
+  
+  // 从 SITE_DATA 读取友链数据
+  const friends = SITE_DATA.friends || [];
+  
+  if (friends.length === 0) {
+    friendsContainer.innerHTML = '<div class="no-results"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span><h3>暂无友链</h3><p>期待与更多朋友交换链接~</p></div>';
+    return;
+  }
+  
+  friendsContainer.innerHTML = friends.map(function(friend) {
+    return `
+      <div class="friend-card">
+        <div class="friend-avatar">
+          <img src="${friend.avatar}" alt="${friend.name}" loading="lazy">
+        </div>
+        <div class="friend-info">
+          <h4 class="friend-name">${friend.name}</h4>
+          <p class="friend-desc">${friend.description}</p>
+          <a href="${friend.url}" class="friend-link" target="_blank" rel="noopener noreferrer">访问</a>
+        </div>
+      </div>
+    `;
+  }).join('');
+},
   initBanner() {
     const bannerSlides = document.querySelector('.banner-slides');
     const bannerDots = document.querySelector('.banner-dots');
@@ -151,6 +191,10 @@ const App = {
         e.preventDefault();
         Posts.clearFilter();
         Scroll.scrollToTop();
+        if (window.location.hash !== '') {
+          window.location.hash = '';
+          this.handleHashChange();
+        }
       }
       if (e.target.closest('.footer-copyright a')) {
         e.preventDefault();
@@ -158,7 +202,7 @@ const App = {
       }
     });
     window.addEventListener('resize', () => {
-      if (window.innerWidth > 1024) {
+      if (window.innerWidth > 1024 && this.currentPage === 'home') {
         Sidebar.close();
       }
     });

@@ -1,42 +1,101 @@
 const Sidebar = {
   sidebar: null,
   overlay: null,
+  toggleBtn: null,
   announcementHidden: false,
   init() {
     this.sidebar = document.querySelector('.sidebar');
     this.overlay = document.querySelector('.sidebar-overlay');
     this.toggleBtn = document.querySelector('.sidebar-toggle');
+    
+    if (!this.sidebar) return;
+    
     this.renderProfile();
     this.renderCategories();
     this.renderTags();
     this.bindEvents();
     this.loadAnnouncementState();
+    this.checkVisibility();
   },
+  
+  checkVisibility() {
+    const hash = window.location.hash;
+    const isSpecialPage = hash === '#archives' || hash === '#about' || hash === '#friends';
+    const isHomePage = !isSpecialPage;
+    
+    if (isSpecialPage) {
+      if (this.sidebar) this.sidebar.style.display = 'none';
+      if (this.toggleBtn) this.toggleBtn.style.display = 'none';
+      const footer = document.querySelector('.footer');
+      const mainContent = document.querySelector('.main-content');
+      if (footer) footer.style.marginLeft = '0';
+      if (mainContent) mainContent.style.marginLeft = '0';
+    } else {
+      if (this.sidebar) this.sidebar.style.display = 'block';
+      if (this.toggleBtn) {
+        if (window.innerWidth <= 1024) {
+          this.toggleBtn.style.display = 'flex';
+        } else {
+          this.toggleBtn.style.display = 'none';
+        }
+      }
+      const footer = document.querySelector('.footer');
+      const mainContent = document.querySelector('.main-content');
+      if (footer && window.innerWidth > 1024) footer.style.marginLeft = '280px';
+      if (mainContent && window.innerWidth > 1024) mainContent.style.marginLeft = '280px';
+      if (footer && window.innerWidth <= 1024) footer.style.marginLeft = '0';
+      if (mainContent && window.innerWidth <= 1024) mainContent.style.marginLeft = '0';
+    }
+  },
+  
   bindEvents() {
-    document.addEventListener('click', (e) => {
+    const self = this;
+    document.addEventListener('click', function(e) {
       if (e.target.closest('.sidebar-toggle')) {
-        this.toggle();
+        self.toggle();
       }
       if (e.target.closest('.sidebar-overlay')) {
-        this.close();
+        self.close();
       }
       if (e.target.closest('.announcement-close')) {
-        this.closeAnnouncement();
+        self.closeAnnouncement();
       }
       if (e.target.closest('.category-item')) {
-        this.handleCategoryClick(e);
+        self.handleCategoryClick(e);
       }
       if (e.target.closest('.tag-item')) {
-        this.handleTagClick(e);
+        self.handleTagClick(e);
       }
       if (e.target.closest('.social-link')) {
-        this.handleSocialClick(e);
+        self.handleSocialClick(e);
       }
       if (e.target.closest('.profile-avatar')) {
-        this.handleProfileClick();
+        self.handleProfileClick();
+      }
+    });
+    
+    window.addEventListener('hashchange', function() {
+      self.checkVisibility();
+      self.close();
+    });
+    
+    window.addEventListener('resize', function() {
+      self.checkVisibility();
+      if (window.innerWidth > 1024) {
+        if (self.sidebar && self.sidebar.style.display !== 'none') {
+          self.close();
+        }
+        if (self.toggleBtn) self.toggleBtn.style.display = 'none';
+      } else {
+        const hash = window.location.hash;
+        const isSpecialPage = hash === '#archives' || hash === '#about' || hash === '#friends';
+        if (!isSpecialPage && self.toggleBtn) {
+          self.toggleBtn.style.display = 'flex';
+        }
       }
     });
   },
+  
   renderProfile() {
     const data = SITE_DATA.site;
     const avatar = this.sidebar?.querySelector('.profile-avatar img');
@@ -52,6 +111,7 @@ const Sidebar = {
       stats[2].textContent = SITE_DATA.tags.length;
     }
   },
+  
   renderCategories() {
     const container = this.sidebar?.querySelector('.category-list');
     if (!container) return;
@@ -79,6 +139,7 @@ const Sidebar = {
       </div>
     `).join('');
   },
+  
   renderTags() {
     const container = this.sidebar?.querySelector('.tag-cloud');
     if (!container) return;
@@ -88,16 +149,20 @@ const Sidebar = {
       </span>
     `).join('');
   },
+  
   toggle() {
     this.sidebar?.classList.toggle('open');
     this.overlay?.classList.toggle('active');
   },
+  
   close() {
     this.sidebar?.classList.remove('open');
     this.overlay?.classList.remove('active');
   },
+  
   handleCategoryClick(e) {
     const item = e.target.closest('.category-item');
+    if (!item) return;
     const categoryId = item.dataset.categoryId;
     document.querySelectorAll('.category-item').forEach(i => i.classList.remove('active'));
     document.querySelectorAll('.tag-item').forEach(t => t.classList.remove('active'));
@@ -110,21 +175,24 @@ const Sidebar = {
     this.close();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   },
+  
   handleTagClick(e) {
     const tag = e.target.closest('.tag-item');
+    if (!tag) return;
     const tagId = parseInt(tag.dataset.tagId);
+    const isActive = tag.classList.contains('active');
     document.querySelectorAll('.tag-item').forEach(t => t.classList.remove('active'));
-    if (tag.classList.contains('active')) {
-      tag.classList.remove('active');
-      Posts.clearFilter();
-    } else {
+    document.querySelectorAll('.category-item').forEach(c => c.classList.remove('active'));
+    if (!isActive) {
       tag.classList.add('active');
-      document.querySelectorAll('.category-item').forEach(c => c.classList.remove('active'));
       Posts.filterByTag(tagId);
+    } else {
+      Posts.clearFilter();
     }
     this.close();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   },
+  
   handleSocialClick(e) {
     e.preventDefault();
     const link = e.target.closest('.social-link');
@@ -133,9 +201,11 @@ const Sidebar = {
       window.open(href, '_blank', 'noopener,noreferrer');
     }
   },
+  
   handleProfileClick() {
     Modal.open('about');
   },
+  
   closeAnnouncement() {
     const announcement = this.sidebar?.querySelector('.announcement');
     if (announcement) {
@@ -144,6 +214,7 @@ const Sidebar = {
       localStorage.setItem('sakura-announcement-hidden', 'true');
     }
   },
+  
   loadAnnouncementState() {
     const hidden = localStorage.getItem('sakura-announcement-hidden');
     if (hidden === 'true') {

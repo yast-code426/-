@@ -8,25 +8,37 @@
 @media (max-width: 1024px) {
   .sidebar {
     transform: translateX(-100%);
+    display: block !important;
   }
 
   .sidebar.open {
     transform: translateX(0);
   }
-   
+  
   .sidebar-toggle {
-  display: flex;
+    display: flex !important;
   }
+  
   .main-content {
-    margin-left: 0;
+    margin-left: 0 !important;
   }
 
   .footer {
-    margin-left: 0;
+    margin-left: 0 !important;
   }
 
   .posts-grid {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+}
+
+@media (min-width: 1025px) {
+  .sidebar-toggle {
+    display: none !important;
+  }
+  
+  .sidebar {
+    transform: translateX(0) !important;
   }
 }
 
@@ -74,7 +86,7 @@
 
   .sidebar-toggle {
     bottom: 90px;
-    right: 16px;
+    left: 16px;
   }
 
   .main-content {

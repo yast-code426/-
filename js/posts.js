@@ -15,23 +15,26 @@ const Posts = {
     this.bindEvents();
     this.initInlineSearch();
   },
-  initInlineSearch() {
-    const input = document.getElementById('inline-search-input');
-    const clearBtn = document.getElementById('inline-search-clear');
-    if (!input || !clearBtn) return;
-    input.addEventListener('input', () => {
-      const query = input.value.trim();
-      this.searchQuery = query;
-      clearBtn.style.display = query.length > 0 ? 'flex' : 'none';
-      this.filterBySearch(query);
-    });
-    clearBtn.addEventListener('click', () => {
-      input.value = '';
-      this.searchQuery = '';
-      clearBtn.style.display = 'none';
-      this.filterBySearch('');
-    });
-  },
+initInlineSearch() {
+  const input = document.getElementById('inline-search-input');
+  const clearBtn = document.getElementById('inline-search-clear');
+  if (!input || !clearBtn) return;
+  
+  const self = this;
+  input.addEventListener('input', function() {
+    const query = input.value.trim();
+    self.searchQuery = query;
+    clearBtn.style.display = query.length > 0 ? 'flex' : 'none';
+    self.filterBySearch(query);
+  });
+  
+  clearBtn.addEventListener('click', function() {
+    input.value = '';
+    self.searchQuery = '';
+    clearBtn.style.display = 'none';
+    self.filterBySearch('');
+  });
+},
   loadState() {
     const saved = localStorage.getItem('sakura-view-mode');
     if (saved) this.viewMode = saved;
@@ -79,7 +82,10 @@ const Posts = {
     const titleEl = header.querySelector('.content-title span');
     const filterContainer = header.querySelector('.filter-info');
     const total = this.filteredPosts.length;
-    const totalText = this.filterCategory || this.filterTag ? ` (${total})` : ` (${total})`;
+    const totalText = ` (${total})`;
+    if (titleEl) {
+      titleEl.textContent = totalText;  // 或者保留原有文字，只更新括号部分
+    }
     if (titleEl) {
       titleEl.textContent = totalText;
     }

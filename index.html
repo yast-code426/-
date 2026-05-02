@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="yast的个人博客 - 记录生活与成长">
   <title>yast的小窝</title>
+  <link rel="preload" as="image" href="./logo/TX.png">
+  <link rel="preconnect" href="https://esa-img.mint.ac.cn">
+  <link rel="preconnect" href="https://esa-img.loliapi.cn">
+  <link rel="preconnect" href="https://esa-img.iloli.love">
+  <link rel="preconnect" href="https://eo-img.mint.ac.cn">
+  <link rel="preconnect" href="https://eo-img.544521.xyz">
   <link rel="icon" type="image/jpeg" href="./logo/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,7 +35,7 @@
     <div class="navbar-inner">
       <a href="#" class="navbar-brand">
         <div class="avatar">
-          <img src="./logo/TX.png" alt="yast">
+          <img src="./logo/TX.png" alt="yast" loading="eager" fetchpriority="high" decoding="async">
         </div>
         <span>yast</span>
       </a>
@@ -235,7 +241,7 @@
       <div class="section-container">
         <div class="about-page-content">
           <div class="about-page-avatar">
-            <img src="./logo/TX.png" alt="头像">
+            <img src="./logo/TX.png" alt="头像" loading="eager" fetchpriority="high" decoding="async">
           </div>
           <h2 class="about-page-name">yast</h2>
           <p class="about-page-bio">一个热爱生活、喜欢记录日常的普通人</p>
@@ -344,7 +350,7 @@ function checkMailto(event) {
         <div class="friends-list">
           <div class="friend-card">
             <div class="friend-avatar">
-              <img src="./logo/TX.png" alt="头像">
+              <img src="./logo/TX.png" alt="头像" loading="lazy" decoding="async">
             </div>
             <div class="friend-info">
               <h4 class="friend-name">yast的小窝</h4>

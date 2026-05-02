@@ -87,10 +87,18 @@ const Banner = {
   },
   preloadImages() {
     const banners = SITE_DATA.banners;
+    // 预加载前2张图片，设置高优先级
     if (banners.length > 0) {
       const img = new Image();
       img.src = banners[0].image;
+      img.fetchPriority = 'high';
       this.loadedImages.push(banners[0].image);
+    }
+    // 预加载第二张作为切换缓冲
+    if (banners.length > 1) {
+      const img2 = new Image();
+      img2.src = banners[1].image;
+      this.loadedImages.push(banners[1].image);
     }
   },
   loadSlideImage(index) {

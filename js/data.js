@@ -79,8 +79,7 @@ const SITE_DATA = {
       name: "加入我们",
       avatar: "https://t.alcy.cc/moez",
       description: "请联系QQ3822579826",
-      url: "tencent://ntqq-open?subCmd=profile&action=openMiniBuddyProfile&actionParams={\"uin\":\"3822579826\",\"sourceType\":\"QrCodeShareBuddyLink\"}"
-    },
+      url: "mqqapi://card/show_pslcard?src_type=internal&version=1&uin=3822579826"},
     {
       id: 6,
       name: "ZSC科技",

@@ -5,6 +5,7 @@ const Banner = {
   autoplayDelay: 6000,
   isTransitioning: false,
   observer: null,
+  loadedImages: [],
   init() {
     this.slides = document.querySelectorAll('.banner-slide');
     this.dots = document.querySelectorAll('.banner-dot');
@@ -43,6 +44,7 @@ const Banner = {
     this.currentSlide = (index + this.totalSlides) % this.totalSlides;
     this.slides[this.currentSlide].classList.add('active');
     this.dots[this.currentSlide].classList.add('active');
+    this.loadSlideImage(this.currentSlide);
     setTimeout(() => {
       this.isTransitioning = false;
     }, 800);
@@ -80,10 +82,20 @@ const Banner = {
   },
   preloadImages() {
     const banners = SITE_DATA.banners;
-    banners.forEach(banner => {
+    if (banners.length > 0) {
       const img = new Image();
-      img.src = banner.image;
-    });
+      img.src = banners[0].image;
+      this.loadedImages.push(banners[0].image);
+    }
+  },
+  loadSlideImage(index) {
+    const banners = SITE_DATA.banners;
+    if (!banners || !banners[index]) return;
+    const imageUrl = banners[index].image;
+    if (this.loadedImages.includes(imageUrl)) return;
+    const img = new Image();
+    img.src = imageUrl;
+    this.loadedImages.push(imageUrl);
   },
   destroy() {
     this.stopAutoplay();

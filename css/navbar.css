@@ -130,7 +130,7 @@
   height: 20px;
 }
 
-.navbar-toggle {
+.navbar-btn[data-action="open-search"] {
   display: none;
 }
 
@@ -149,6 +149,7 @@
     transform: translateX(-100%);
     transition: transform var(--transition-normal);
     overflow-y: auto;
+    z-index: 1001;
   }
 
   .navbar-nav.open {
@@ -164,11 +165,7 @@
     display: none;
   }
 
-  .navbar-toggle {
-    display: flex;
-  }
-
-  .navbar-actions .navbar-btn:not(.navbar-toggle) {
+  .navbar-actions .navbar-btn:not([data-action="toggle-theme"]) {
     display: none;
   }
 }

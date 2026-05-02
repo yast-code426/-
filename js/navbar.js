@@ -9,11 +9,6 @@ const Navbar = {
   },
   bindEvents() {
     window.addEventListener('scroll', () => this.handleScroll());
-    document.addEventListener('click', (e) => {
-      if (e.target.closest('.navbar-toggle')) {
-        this.toggleMobileMenu();
-      }
-    });
   },
   handleScroll() {
     const currentScroll = window.pageYOffset;
@@ -23,12 +18,6 @@ const Navbar = {
       this.navbar.classList.remove('scrolled');
     }
     this.lastScroll = currentScroll;
-  },
-  toggleMobileMenu() {
-    const nav = document.querySelector('.navbar-nav');
-    const overlay = document.querySelector('.sidebar-overlay');
-    nav.classList.toggle('open');
-    if (overlay) overlay.classList.toggle('active');
   },
   closeMobileMenu() {
     const nav = document.querySelector('.navbar-nav');

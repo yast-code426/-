@@ -22,6 +22,7 @@ const Sidebar = {
     const hash = window.location.hash;
     const isSpecialPage = hash === '#archives' || hash === '#about' || hash === '#friends';
     const isHomePage = !isSpecialPage;
+    const isDesktop = window.innerWidth > 1024;
     
     if (isSpecialPage) {
       if (this.sidebar) this.sidebar.style.display = 'none';
@@ -41,10 +42,10 @@ const Sidebar = {
       }
       const footer = document.querySelector('.footer');
       const mainContent = document.querySelector('.main-content');
-      if (footer && window.innerWidth > 1024) footer.style.marginLeft = '280px';
-      if (mainContent && window.innerWidth > 1024) mainContent.style.marginLeft = '280px';
-      if (footer && window.innerWidth <= 1024) footer.style.marginLeft = '0';
-      if (mainContent && window.innerWidth <= 1024) mainContent.style.marginLeft = '0';
+      if (footer && isDesktop) footer.style.marginLeft = '280px';
+      if (mainContent && isDesktop) mainContent.style.marginLeft = '280px';
+      if (footer && !isDesktop) footer.style.marginLeft = '0';
+      if (mainContent && !isDesktop) mainContent.style.marginLeft = '0';
     }
   },
   

@@ -11,6 +11,7 @@ const App = {
     Scroll.init();
     this.bindGlobalEvents();
     this.initPageNavigation();
+    this.initMobileTabBar();
     this.renderArchives();
     this.renderFriends();
     this.handleHashChange();
@@ -28,6 +29,46 @@ const App = {
         }
       });
     });
+  },
+  initMobileTabBar() {
+    const tabBar = document.querySelector('.mobile-tab-bar');
+    if (!tabBar) return;
+    tabBar.addEventListener('click', (e) => {
+      const tabItem = e.target.closest('.tab-item');
+      if (!tabItem) return;
+      const nav = tabItem.dataset.nav;
+      if (!nav) return;
+      let hash = '';
+      switch (nav) {
+        case 'home':
+          hash = '';
+          break;
+        case 'archives':
+          hash = 'archives';
+          break;
+        case 'about':
+          hash = 'about';
+          break;
+        case 'friends':
+          hash = 'friends';
+          break;
+        default:
+          return;
+      }
+      if (hash) {
+        window.location.hash = hash;
+      } else {
+        window.location.hash = '';
+      }
+      this.handleHashChange();
+      this.closeMobileMenu();
+    });
+  },
+  closeMobileMenu() {
+    const nav = document.querySelector('.navbar-nav');
+    const overlay = document.querySelector('.sidebar-overlay');
+    if (nav) nav.classList.remove('open');
+    if (overlay) overlay.classList.remove('active');
   },
   handleHashChange() {
     const hash = window.location.hash || '#';
@@ -51,21 +92,23 @@ const App = {
     const sidebar = document.querySelector('.sidebar');
     const sidebarToggle = document.querySelector('.sidebar-toggle');
     const footer = document.querySelector('.footer');
+    const mainContent = document.querySelector('.main-content');
+    const isDesktop = window.innerWidth > 1024;
     
     if (targetSection === null) {
       contentWrapper.style.display = 'block';
       banner.style.display = 'block';
       if (sidebar) sidebar.style.display = 'block';
       if (sidebarToggle) sidebarToggle.style.display = 'flex';
-      if (footer) footer.style.marginLeft = '280px';
-      document.querySelector('.main-content').style.marginLeft = '280px';
+      if (footer) footer.style.marginLeft = isDesktop ? '280px' : '0';
+      if (mainContent) mainContent.style.marginLeft = isDesktop ? '280px' : '0';
     } else {
       contentWrapper.style.display = 'none';
       banner.style.display = 'none';
       if (sidebar) sidebar.style.display = 'none';
       if (sidebarToggle) sidebarToggle.style.display = 'none';
       if (footer) footer.style.marginLeft = '0';
-      document.querySelector('.main-content').style.marginLeft = '0';
+      if (mainContent) mainContent.style.marginLeft = '0';
     }
     
     if (targetSection && targetSection !== 'home') {
@@ -78,12 +121,39 @@ const App = {
   updateNavActiveState(hash) {
     document.querySelectorAll('.nav-link').forEach(link => {
       const href = link.getAttribute('href');
-      if (href === hash || (hash === '' && href === '#')) {
+      if (href === hash || (hash === '' && href === '#') || (hash === '#' && href === '#')) {
         link.classList.add('active');
       } else {
         link.classList.remove('active');
       }
     });
+    const tabBar = document.querySelector('.mobile-tab-bar');
+    if (tabBar) {
+      tabBar.querySelectorAll('.tab-item').forEach(tab => {
+        const nav = tab.dataset.nav;
+        if (!nav) return;
+        let isActive = false;
+        switch (nav) {
+          case 'home':
+            isActive = hash === '' || hash === '#';
+            break;
+          case 'archives':
+            isActive = hash === '#archives';
+            break;
+          case 'about':
+            isActive = hash === '#about';
+            break;
+          case 'friends':
+            isActive = hash === '#friends';
+            break;
+        }
+        if (isActive) {
+          tab.classList.add('active');
+        } else {
+          tab.classList.remove('active');
+        }
+      });
+    }
   },
   renderArchives() {
     const archiveList = document.querySelector('.archive-list');
@@ -130,7 +200,6 @@ renderFriends() {
   const friendsContainer = document.querySelector('.friends-list');
   if (!friendsContainer) return;
   
-  // 从 SITE_DATA 读取友链数据
   const friends = SITE_DATA.friends || [];
   
   if (friends.length === 0) {

@@ -44,6 +44,11 @@ const Banner = {
     this.currentSlide = (index + this.totalSlides) % this.totalSlides;
     this.slides[this.currentSlide].classList.add('active');
     this.dots[this.currentSlide].classList.add('active');
+    const slideBg = this.slides[this.currentSlide].querySelector('.slide-bg');
+    if (slideBg && slideBg.hasAttribute('data-bg')) {
+      slideBg.style.backgroundImage = slideBg.getAttribute('data-bg');
+      slideBg.removeAttribute('data-bg');
+    }
     this.loadSlideImage(this.currentSlide);
     setTimeout(() => {
       this.isTransitioning = false;

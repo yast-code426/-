@@ -81,6 +81,10 @@ const App = {
         if (hash === `#${section}`) {
           targetSection = section;
           el.style.display = 'block';
+          el.classList.add('page-enter');
+          setTimeout(() => {
+            el.classList.remove('page-enter');
+          }, 350);
         } else {
           el.style.display = 'none';
         }
@@ -97,6 +101,10 @@ const App = {
     
     if (targetSection === null) {
       contentWrapper.style.display = 'block';
+      contentWrapper.classList.add('page-enter');
+      setTimeout(() => {
+        contentWrapper.classList.remove('page-enter');
+      }, 350);
       banner.style.display = 'block';
       if (sidebar) sidebar.style.display = 'block';
       if (sidebarToggle) sidebarToggle.style.display = 'flex';
@@ -229,7 +237,7 @@ renderFriends() {
     const banners = SITE_DATA.banners;
     bannerSlides.innerHTML = banners.map((banner, index) => `
       <div class="banner-slide ${index === 0 ? 'active' : ''}">
-        <div class="slide-bg" style="background-image: url('${banner.image}')" loading="${index === 0 ? 'eager' : 'lazy'}"></div>
+        <div class="slide-bg" ${index === 0 ? `style="background-image: url('${banner.image}')"` : `data-bg="url('${banner.image}')"`}></div>
         <div class="slide-overlay"></div>
         <div class="banner-content">
           ${index === 0 ? `<div class="banner-avatar"><img src="${SITE_DATA.site.avatar}" alt="${SITE_DATA.site.author}" loading="eager"></div>` : ''}

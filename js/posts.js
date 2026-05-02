@@ -329,23 +329,11 @@ const Posts = {
   },
 
   initScrollAnimations() {
-    if ('IntersectionObserver' in window) {
-      const cards = document.querySelectorAll('.post-card:not(.animated)');
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry, index) => {
-          if (entry.isIntersecting) {
-            setTimeout(() => {
-              entry.target.classList.add('animated', 'fade-in-up');
-            }, index * 80);
-            observer.unobserve(entry.target);
-          }
-        });
-      }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-      });
-      cards.forEach(card => observer.observe(card));
-    }
+    const cards = document.querySelectorAll('.post-card:not(.animated)');
+    cards.forEach((card, index) => {
+      card.style.animationDelay = (index * 60) + 'ms';
+      card.classList.add('animated', 'fade-in-up');
+    });
   }
 };
 

@@ -1,6 +1,7 @@
 const Scroll = {
   progressBar: null,
   scrollBtn: null,
+  scrollRaf: null,
   init() {
     this.progressBar = document.querySelector('.scroll-progress');
     this.scrollBtn = document.querySelector('.scroll-to-top');
@@ -15,19 +16,23 @@ const Scroll = {
     });
   },
   handleScroll() {
-    const scrollTop = window.pageYOffset;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = (scrollTop / docHeight) * 100;
-    if (this.progressBar) {
-      this.progressBar.style.width = progress + '%';
-    }
-    if (this.scrollBtn) {
-      if (scrollTop > 400) {
-        this.scrollBtn.classList.add('show');
-      } else {
-        this.scrollBtn.classList.remove('show');
+    if (this.scrollRaf) return;
+    this.scrollRaf = requestAnimationFrame(() => {
+      const scrollTop = window.pageYOffset;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (scrollTop / docHeight) * 100;
+      if (this.progressBar) {
+        this.progressBar.style.width = progress + '%';
       }
-    }
+      if (this.scrollBtn) {
+        if (scrollTop > 400) {
+          this.scrollBtn.classList.add('show');
+        } else {
+          this.scrollBtn.classList.remove('show');
+        }
+      }
+      this.scrollRaf = null;
+    });
   },
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });

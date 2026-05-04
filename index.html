@@ -27,6 +27,7 @@
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/download.css">
 </head>
 <body>
   <div class="scroll-progress"></div>
@@ -43,6 +44,7 @@
       <ul class="navbar-nav">
         <li><a href="#" class="nav-link active">首页</a></li>
         <li><a href="#archives" class="nav-link">归档</a></li>
+        <li><a href="#download" class="nav-link">下载</a></li>
         <li><a href="#about" class="nav-link">关于</a></li>
         <li><a href="#friends" class="nav-link">友链</a></li>
       </ul>
@@ -237,6 +239,152 @@
       </div>
     </section>
     
+    <section id="download" class="page-section download-section" style="display:none;">
+      <div class="section-container">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+            </span>
+            资源下载
+          </h2>
+          <p class="section-subtitle">精选工具与资源整理</p>
+        </div>
+        
+        <div class="download-toolbar">
+          <div class="download-search">
+            <span class="download-search-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+            </span>
+            <input type="text" class="download-search-input" placeholder="搜索文件或文件夹...">
+            <button class="download-search-clear" aria-label="清除">
+              <span class="icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"/>
+                  <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </span>
+            </button>
+          </div>
+          
+          <div class="download-controls">
+            <div class="download-sort">
+              <button class="download-sort-btn">
+                <span class="icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="4" y1="6" x2="20" y2="6"/>
+                    <line x1="4" y1="12" x2="16" y2="12"/>
+                    <line x1="4" y1="18" x2="12" y2="18"/>
+                  </svg>
+                </span>
+                <span class="sort-label">名称 A-Z</span>
+              </button>
+              <div class="download-sort-menu">
+                <button class="download-sort-item active" data-sort="name" data-order="asc">
+                  <span class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                  </span>
+                  名称 A-Z
+                </button>
+                <button class="download-sort-item" data-sort="name" data-order="desc">
+                  <span class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                  </span>
+                  名称 Z-A
+                </button>
+                <button class="download-sort-item" data-sort="size" data-order="asc">
+                  <span class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                  </span>
+                  从小到大
+                </button>
+                <button class="download-sort-item" data-sort="size" data-order="desc">
+                  <span class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                  </span>
+                  从大到小
+                </button>
+                <button class="download-sort-item" data-sort="date" data-order="desc">
+                  <span class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                  </span>
+                  从新到旧
+                </button>
+                <button class="download-sort-item" data-sort="date" data-order="asc">
+                  <span class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                  </span>
+                  从旧到新
+                </button>
+                <button class="download-sort-item" data-sort="type" data-order="asc">
+                  <span class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                  </span>
+                  类型
+                </button>
+              </div>
+            </div>
+            
+            <div class="view-toggle">
+              <button class="view-toggle-btn active" data-view="grid" title="网格视图">
+                <span class="icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="7"/>
+                    <rect x="14" y="3" width="7" height="7"/>
+                    <rect x="14" y="14" width="7" height="7"/>
+                    <rect x="3" y="14" width="7" height="7"/>
+                  </svg>
+                </span>
+              </button>
+              <button class="view-toggle-btn" data-view="list" title="列表视图">
+                <span class="icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="8" y1="6" x2="21" y2="6"/>
+                    <line x1="8" y1="12" x2="21" y2="12"/>
+                    <line x1="8" y1="18" x2="21" y2="18"/>
+                    <line x1="3" y1="6" x2="3.01" y2="6"/>
+                    <line x1="3" y1="12" x2="3.01" y2="12"/>
+                    <line x1="3" y1="18" x2="3.01" y2="18"/>
+                  </svg>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="download-breadcrumb">
+          <a href="javascript:;" class="breadcrumb-item active">
+            <span>全部文件</span>
+          </a>
+        </div>
+        
+        <div class="download-stats"></div>
+        
+        <div class="download-content"></div>
+      </div>
+    </section>
+    
     <section id="about" class="page-section" style="display:none;">
       <div class="section-container">
         <div class="about-page-content">
@@ -375,6 +523,7 @@ function checkMailto(event) {
           <ul>
             <li><a href="#">首页</a></li>
             <li><a href="#archives">归档</a></li>
+            <li><a href="#download">下载</a></li>
             <li><a href="#about">关于</a></li>
             <li><a href="#friends">友链</a></li>
           </ul>
@@ -468,6 +617,16 @@ function checkMailto(event) {
         </span>
         <span>归档</span>
       </a>
+      <a href="#download" class="tab-item" data-nav="download">
+        <span class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+        </span>
+        <span>下载</span>
+      </a>
       <a href="#about" class="tab-item" data-nav="about">
         <span class="icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -492,6 +651,7 @@ function checkMailto(event) {
   </nav>
   
   <script src="js/data.js"></script>
+  <script src="js/download-data.js"></script>
   <script src="js/theme.js"></script>
   <script src="js/banner.js"></script>
   <script src="js/navbar.js"></script>
@@ -500,6 +660,7 @@ function checkMailto(event) {
   <script src="js/search.js"></script>
   <script src="js/scroll.js"></script>
   <script src="js/modal.js"></script>
+  <script src="js/download.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

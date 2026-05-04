@@ -46,6 +46,9 @@ const App = {
         case 'archives':
           hash = 'archives';
           break;
+        case 'download':
+          hash = 'download';
+          break;
         case 'about':
           hash = 'about';
           break;
@@ -72,7 +75,7 @@ const App = {
   },
   handleHashChange() {
     const hash = window.location.hash || '#';
-    const sections = ['archives', 'about', 'friends'];
+    const sections = ['archives', 'download', 'about', 'friends'];
     let targetSection = null;
     
     sections.forEach(section => {
@@ -147,6 +150,9 @@ const App = {
             break;
           case 'archives':
             isActive = hash === '#archives';
+            break;
+          case 'download':
+            isActive = hash === '#download';
             break;
           case 'about':
             isActive = hash === '#about';
